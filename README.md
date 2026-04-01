@@ -185,9 +185,3 @@ Roll No: B230038CS
 This project is for academic purposes. You may modify and use it with proper attribution.
 
 ---
-
-If you want, I can also:
-
-* Customize it for **your exact GitHub repo structure**
-* Add **badges (build, license, tech stack)**
-* Write a **killer project description for GitHub (the short one)**
