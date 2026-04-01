@@ -1,0 +1,43 @@
+{% extends 'academics/base.html' %}
+
+{% block content %}
+    <h2 class="page-title">Review Marks – {{ student.name }} ({{ student.roll_no }})</h2>
+    <p class="muted-text">
+        Semester {{ semester }} &middot;
+        Status: <strong>{{ status }}</strong> &middot;
+        SGPA: {{ sgpa }} &middot; CGPA: {{ cgpa }}
+    </p>
+
+    <table class="results-table">
+        <thead>
+            <tr>
+                <th>Subject Code</th>
+                <th>Subject Name</th>
+                <th>Credits</th>
+                <th>Obtained Grade</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in marksheet_data %}
+                <tr>
+                    <td>{{ row.subject.sub_code }}</td>
+                    <td>{{ row.subject.sub_name }}</td>
+                    <td>{{ row.subject.credits }}</td>
+                    <td>{{ row.letter_grade }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <p class="muted-text" style="margin-top: 15px;">
+        To edit individual test marks, open the teacher dashboard for the corresponding test
+        or use the existing edit-mark links in the test views. Staff users are allowed to edit
+        any result from those pages.
+    </p>
+
+    <a href="{% url 'publish_marksheets' %}?course={{ student.course.id }}&semester={{ semester }}" class="button-style" style="margin-top: 15px;">
+        &larr; Back to Publish Marksheets
+    </a>
+{% endblock %}
+
+

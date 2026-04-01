@@ -1,0 +1,19 @@
+{% extends 'academics/base.html' %}
+
+{% block content %}
+    <h2>Edit Mark</h2>
+
+    <p>
+        <strong>Student:</strong> {{ result.student.name }} ({{ result.student.roll_no }})<br>
+        <strong>Test:</strong> {{ result.test.subject.sub_name }} - {{ result.test.exam_type }}
+    </p>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save Changes</button>
+    </form>
+    <br>
+    <!-- Link to go back to the list of marks for that test -->
+    <a href="{% url 'view_marks' result.test.id %}">&larr; Back to Marks List</a>
+{% endblock %}

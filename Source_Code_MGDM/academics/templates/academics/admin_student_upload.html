@@ -1,0 +1,61 @@
+{% extends 'academics/base.html' %}
+
+{% block content %}
+    <h2>Bulk Student Registration</h2>
+
+    {% if success %}
+        <div style="background-color: #D4EDDA; color: #155724; padding: 1rem; border-radius: 5px; margin-bottom: 20px;">
+            <strong>Upload Process Complete!</strong>
+            <p>{{ created_count }} new students were successfully created.</p>
+            {% if errors %}
+                <div style="margin-top: 15px; border-top: 1px solid #c3e6cb; padding-top: 10px;">
+                    <p><strong>{{ error_count }} errors occurred:</strong></p>
+                    <ul>{% for error in errors %}<li>{{ error }}</li>{% endfor %}</ul>
+                </div>
+            {% endif %}
+        </div>
+    {% endif %}
+    {% if upload_error %}
+         <p style="color: #D8000C; background-color: #FFD2D2; padding: 10px; border-radius: 4px;">{{ upload_error }}</p>
+    {% endif %}
+
+    <p>
+        Upload an Excel (.xlsx, .ods) file with required columns:
+        <strong>roll_no</strong>, <strong>name</strong>, <strong>email</strong>.
+        You may optionally include a <strong>password</strong> column.
+    </p>
+    <p>
+        If the password column is empty or not present, the student's roll number will be used
+        as their default password. Students can later change their password from the portal.
+    </p>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div style="margin-bottom: 15px;">
+            <label for="course">Select Course for all students in this file:</label><br>
+            <select name="course" id="course" required>
+                {% for course in courses %}
+                    <option value="{{ course.id }}">{{ course.course_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div style="margin-bottom: 15px;">
+            <label for="current_semester">Current Semester for these students:</label><br>
+            <select name="current_semester" id="current_semester" required>
+                <option value="">Select semester</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+            </select>
+        </div>
+        <input type="file" name="student_file" accept=".xlsx, .ods" required>
+        <button type="submit">Upload and Create Students</button>
+    </form>
+    <br>
+    <a href="{% url 'dashboard' %}"> &larr; Back to Dashboard</a>
+{% endblock %}

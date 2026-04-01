@@ -1,0 +1,55 @@
+{% extends 'academics/base.html' %}
+
+{% block content %}
+    <h2 class="page-title">Bulk Subject Registration</h2>
+
+    {% if success %}
+        <div style="background-color: #D4EDDA; color: #155724; padding: 1rem; border-radius: 5px; margin-bottom: 20px;">
+            <strong>Upload Process Complete!</strong>
+            <p>{{ created_count }} new subjects were successfully created.</p>
+            {% if errors %}
+                <div style="margin-top: 15px; border-top: 1px solid #c3e6cb; padding-top: 10px;">
+                    <p><strong>{{ error_count }} warnings/errors occurred:</strong></p>
+                    <ul>{% for error in errors %}<li>{{ error }}</li>{% endfor %}</ul>
+                </div>
+            {% endif %}
+        </div>
+    {% endif %}
+    {% if upload_error %}
+        <p style="color: #D8000C; background-color: #FFD2D2; padding: 10px; border-radius: 4px;">{{ upload_error }}</p>
+    {% endif %}
+
+    <p>
+        Upload an Excel (.xlsx, .ods) file with columns:
+        <strong>sub_code</strong>, <strong>sub_name</strong>, <strong>credits</strong>,
+        and <strong>teacher_username</strong> (the username of the teacher responsible for the subject).
+    </p>
+    <p class="muted-text">
+        The teacher username should normally match their portal login username.
+        If you only have emails, you can use the part before <code>@</code>
+        (e.g. for <code>alice@nit.ac.in</code>, use <code>alice</code>).
+    </p>
+    <p class="muted-text">
+        The subject code should follow your institute convention (e.g. <code>CS15201</code>),
+        where the semester and course type (theory/lab) are encoded in the code itself.
+        Lab subjects (code like <code>CS15201</code> with a <code>2</code> in the type position)
+        will automatically get LabInternal and LabFinal tests; theory subjects (e.g. <code>CS15101</code>)
+        will automatically get Internal, Midterm1, Midterm2, and Endterm tests.
+    </p>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div style="margin-bottom: 15px;">
+            <label for="course">Select Course for all subjects in this file:</label><br>
+            <select name="course" id="course" required>
+                {% for course in courses %}
+                    <option value="{{ course.id }}">{{ course.course_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <input type="file" name="subject_file" accept=".xlsx, .ods" required>
+        <button type="submit">Upload and Create Subjects</button>
+    </form>
+    <br>
+    <a href="{% url 'dashboard' %}"> &larr; Back to Dashboard</a>
+{% endblock %}

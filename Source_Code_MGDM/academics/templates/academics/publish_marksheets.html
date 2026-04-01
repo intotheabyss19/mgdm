@@ -1,0 +1,74 @@
+{% extends 'academics/base.html' %}
+
+{% block content %}
+    <h2 class="page-title">Publish Marksheets</h2>
+
+    <form method="get" style="margin-bottom: 1.5rem;">
+        <label for="course">Course:</label>
+        <select name="course" id="course" required>
+            <option value="">Select Course</option>
+            {% for course in courses %}
+                <option value="{{ course.id }}" {% if course.id|stringformat:"s" == selected_course_id %}selected{% endif %}>{{ course.course_name }}</option>
+            {% endfor %}
+        </select>
+        <label for="semester" style="margin-left: 10px;">Semester:</label>
+        <input type="number" id="semester" name="semester" placeholder="Semester" value="{{ selected_semester|default:'' }}" required>
+        <button type="submit" class="button-style" style="padding: 6px 12px; font-size: 13px;">Filter</button>
+    </form>
+
+    {% if students_data %}
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="publish">
+            <h3>Students in Selected Course &amp; Semester</h3>
+            <p class="muted-text">
+                Tick students to publish/unpublish. Use the "View marks" link to verify detailed marks before publishing.
+            </p>
+            <table class="results-table">
+                <thead>
+                    <tr>
+                        <th>Select</th>
+                        <th>Student</th>
+                        <th>Status</th>
+                        <th>Marks completeness</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in students_data %}
+                        <tr>
+                            <td style="text-align: center;">
+                                <input type="checkbox" name="publish" value="{{ data.student.roll_no }}">
+                            </td>
+                            <td>{{ data.student.name }} ({{ data.student.roll_no }})</td>
+                            <td>
+                                {% if data.is_published %}
+                                    <span style="color: #155724;">Published</span>
+                                {% else %}
+                                    <span style="color: #856404;">Not published</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if data.all_marks_present %}
+                                    <span style="color: #155724;">All marks present</span>
+                                {% else %}
+                                    <span style="color: #D8000C;">Missing marks in {{ data.missing_subjects|length }} subject(s)</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{% url 'review_student_marks' data.student.roll_no selected_semester %}"
+                                   class="button-style"
+                                   style="padding: 4px 8px; font-size: 12px;">
+                                    View marks
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div style="margin-top: 10px;">
+                <button type="submit" class="button-style" style="padding: 6px 12px; font-size: 13px;">Publish Selected</button>
+            </div>
+        </form>
+    {% endif %}
+{% endblock %}

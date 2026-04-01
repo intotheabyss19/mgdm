@@ -1,0 +1,37 @@
+{% extends 'academics/base.html' %}
+
+{% block content %}
+    <h2 class="page-title">Teacher Dashboard</h2>
+    <p class="muted-text">
+        Welcome, <strong>{{ user.teacher.name }}</strong>. Manage marks for your assigned tests below.
+    </p>
+
+    <h3 style="margin-top: 1.5rem;">Your Assigned Tests</h3>
+    {% if tests %}
+        <table class="results-table">
+            <thead>
+                <tr>
+                    <th>Subject</th>
+                    <th>Exam Type</th>
+                    <th>Date</th>
+                    <th style="text-align: center;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for test in tests %}
+                    <tr>
+                        <td>{{ test.subject.sub_name }}</td>
+                        <td>{{ test.exam_type }}</td>
+                        <td>{{ test.test_date }}</td>
+                        <td style="text-align: center;">
+                            <a href="{% url 'upload_marks' test.id %}" class="button-style" style="padding: 6px 10px; font-size: 13px;">Upload</a>
+                            <a href="{% url 'view_marks' test.id %}" class="button-style" style="padding: 6px 10px; font-size: 13px; margin-left: 6px; background-color: #444;">View / Edit</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p class="muted-text">You have not been assigned to any tests yet.</p>
+    {% endif %}
+{% endblock %}

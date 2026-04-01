@@ -1,0 +1,43 @@
+{% extends 'academics/base.html' %}
+
+{% block content %}
+    <h2 class="page-title">Bulk Teacher Registration</h2>
+
+    {% if success %}
+        <div style="background-color: #D4EDDA; color: #155724; padding: 1rem; border-radius: 5px; margin-bottom: 20px;">
+            <strong>Upload Process Complete!</strong>
+            <p>{{ created_count }} new teachers were successfully created.</p>
+            {% if errors %}
+                <div style="margin-top: 15px; border-top: 1px solid #c3e6cb; padding-top: 10px;">
+                    <p><strong>{{ error_count }} errors occurred:</strong></p>
+                    <ul>{% for error in errors %}<li>{{ error }}</li>{% endfor %}</ul>
+                </div>
+            {% endif %}
+        </div>
+    {% endif %}
+    {% if upload_error %}
+         <p style="color: #D8000C; background-color: #FFD2D2; padding: 10px; border-radius: 4px;">{{ upload_error }}</p>
+    {% endif %}
+
+    <p>
+        Upload an Excel (.xlsx, .ods) file with columns:
+        <strong>name</strong>, <strong>email</strong>, <strong>username</strong>,
+        <strong>phone</strong>, and <strong>department</strong>.
+        If <strong>username</strong> is blank, it will default to the part of the email before <code>@</code>.
+    </p>
+    <p class="muted-text">
+        The <strong>department</strong> column must exactly match an existing department name
+        (as configured in the Department model / Django admin). Teacher accounts are created with
+        their username as the initial password; they should change it after first login.
+    </p>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="teacher_file" accept=".xlsx, .ods" required>
+        <button type="submit">Upload and Create Teachers</button>
+    </form>
+    <br>
+    <a href="{% url 'dashboard' %}"> &larr; Back to Dashboard</a>
+{% endblock %}
+
+

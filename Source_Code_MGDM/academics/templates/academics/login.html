@@ -1,0 +1,22 @@
+{% extends 'academics/base.html' %}
+
+{% block content %}
+    <div style="max-width: 420px; margin: 0 auto; text-align: center;">
+        <h2 class="page-title">Portal Login</h2>
+        <p class="muted-text" style="margin-bottom: 20px;">
+            Use your institute-provided username and password to access the portal.
+        </p>
+        <form method="post" style="text-align: left;">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div style="text-align: right; margin-top: 10px;">
+                <button type="submit" class="button-style">Login</button>
+            </div>
+        </form>
+        {% if error %}
+            <p style="color: #D8000C; background-color: #FFD2D2; padding: 10px; border-radius: 4px; margin-top: 15px;">
+                {{ error }}
+            </p>
+        {% endif %}
+    </div>
+{% endblock %}

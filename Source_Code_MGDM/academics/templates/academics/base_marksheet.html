@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <title>Official Marksheet - NIT Sikkim</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; background-color: #f0f2f5; }
+        .header { background-color: white; padding: 15px 30px; border-top: 5px solid #800000; border-bottom: 1px solid #ddd; text-align: center; }
+        .header h1 { color: #800000; margin: 0; font-size: 24px; }
+        .header p { margin: 0; color: #555; }
+        .logo { width: 80px; height: 80px; margin-bottom: 10px; }
+        .main-container { max-width: 900px; margin: 30px auto; padding: 20px; background-color: white; border: 1px solid #ddd; box-shadow: 0 0 10px rgba(0,0,0,0.05); }
+        .button-style { padding: 10px 20px; background-color: #006400; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; text-decoration: none; display: inline-block; }
+        .logout-button { background-color: #8B0000; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="{% static 'images/logo.png' %}" alt="Institute Logo" class="logo">
+        <h1>National Institute of Technology Sikkim</h1>
+    </div>
+    <div class="main-container">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

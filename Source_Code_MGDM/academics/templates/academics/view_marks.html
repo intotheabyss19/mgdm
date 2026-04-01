@@ -1,0 +1,37 @@
+{% extends 'academics/base.html' %}
+
+{% block content %}
+    <h2>Viewing Marks for: {{ test.subject.sub_name }} ({{ test.exam_type }})</h2>
+
+    {% if results %}
+        <table class="results-table">
+            <thead>
+                <tr>
+                    <th>Roll No</th>
+                    <th>Student Name</th>
+                    <th>Marks Obtained</th>
+                    <th>Max Marks</th>
+                    <th>Edit</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for result in results %}
+                    <tr>
+                        <td>{{ result.student.roll_no }}</td>
+                        <td>{{ result.student.name }}</td>
+                        <td>{{ result.obtained_marks }}</td>
+                        <td>{{ result.test.max_marks }}</td>
+                        <td>
+                            <!-- This link takes the teacher directly to the admin page to edit this specific result -->
+                            <a href="{% url 'edit_mark' result.id %}">Edit</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No marks have been uploaded for this test yet.</p>
+    {% endif %}
+    <br>
+    <a href="{% url 'dashboard' %}"> &larr; Back to Dashboard</a>
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends 'academics/base.html' %}
+{% block content %}
+    <style>
+        .marksheet-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .info-table, .grade-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        .info-table td { border: 1px solid #ccc; padding: 8px; }
+        .info-table td:nth-child(odd) { font-weight: bold; background-color: #f9f9f9; width: 20%; }
+        .grade-table th, .grade-table td { border: 1px solid #ccc; padding: 10px; text-align: left; }
+        .grade-table thead { background-color: #f2f2f2; }
+        .summary-footer { text-align: right; font-size: 1.1em; font-weight: bold; }
+        .disclaimer { text-align: center; margin-top: 30px; font-style: italic; color: #555; }
+    </style>
+
+    <div class="marksheet-header">
+        <h3>PROVISIONAL GRADE CARD</h3>
+        <a href="{% url 'logout' %}" class="button-style logout-button">Sign Out</a>
+    </div>
+
+    <h4>Student Information</h4>
+    <table class="info-table">
+        <tr><td>Name:</td><td>{{ student.name }}</td><td>Enroll No.:</td><td>{{ student.roll_no }}</td></tr>
+        <tr><td>Department:</td><td>{{ student.course.department.dept_name }}</td><td>Programme:</td><td>{{ student.programme }}</td></tr>
+        <tr><td>Semester:</td><td>{{ semester }}</td><td></td><td></td></tr>
+    </table>
+
+    <table class="grade-table">
+        <thead>
+            <tr>
+                <th>Subject Name</th>
+                <th>Subject Code</th>
+                <th>Course Credit</th>
+                <th>Obtained Grade</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in marksheet_data %}
+            <tr>
+                <td>{{ item.subject.sub_name }}</td>
+                <td>{{ item.subject.sub_code }}</td>
+                <td>{{ item.subject.credits }}</td>
+                <td>{{ item.letter_grade }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="summary-footer">
+        SGPA: {{ sgpa }} &nbsp;&nbsp;&nbsp; CGPA: {{ cgpa }} &nbsp;&nbsp;&nbsp; Status: {{ status }}
+    </div>
+    
+    <div style="margin-top: 30px;">
+        <a href="{% url 'select_semester' %}" class="button-style">&larr; View Another Semester</a>
+        <a href="{% url 'download_marksheet_pdf' semester %}" class="button-style" style="float: right;">Download PDF</a>
+    </div>
+
+    <div class="disclaimer">
+        This result is intended solely for the examinee's immediate reference. For official use, please reach out to the Examination Cell, NIT Sikkim.
+    </div>
+{% endblock %}
